@@ -33,7 +33,7 @@ const Navbar = () => {
               <div className="hidden md:block">
                 <div className="ml-4 flex items-center md:ml-6">
                   <div className="group relative inline-block text-left">
-                    <span className="flex ml-3 px-3 py-1 text-sm rounded-lg   text-white hover:text-purple hover:cursor-pointer focus:cursor-pointer focus:text-white focus:outline-none ">
+                    <span className="flex ml-3 px-3 py-1 text-sm rounded-lg   text-white  hover:cursor-pointer focus:cursor-pointer focus:text-white focus:outline-none ">
                       Home
                       <svg
                         className="h-5 w-5 fill-white"
@@ -60,12 +60,12 @@ const Navbar = () => {
                       </div>
                     </div>
                   </div>
-                  <span className="flex ml-3 px-3 py-1 text-sm rounded-lg   text-white hover:text-purple hover:cursor-pointer focus:cursor-pointer focus:text-white focus:outline-none ">
+                  <span className="flex ml-3 px-3 py-1 text-sm rounded-lg   text-white  hover:cursor-pointer focus:cursor-pointer focus:text-white focus:outline-none ">
                     Features
                   </span>
 
                   <div className="group relative inline-block text-left">
-                    <span className="flex ml-3 px-3 py-1 text-sm rounded-lg   text-white hover:text-purple hover:cursor-pointer focus:cursor-pointer focus:text-white focus:outline-none ">
+                    <span className="flex ml-3 px-3 py-1 text-sm rounded-lg   text-white  hover:cursor-pointer focus:cursor-pointer focus:text-white focus:outline-none ">
                       Pages
                       <svg
                         className="h-5 w-5 fill-white"
@@ -93,14 +93,14 @@ const Navbar = () => {
                     </div>
                   </div>
 
-                  <span className="flex ml-3 px-3 py-1 text-sm rounded-lg   text-white hover:text-purple hover:cursor-pointer focus:cursor-pointer focus:text-white focus:outline-none ">
+                  <span className="flex ml-3 px-3 py-1 text-sm rounded-lg   text-white  hover:cursor-pointer focus:cursor-pointer focus:text-white focus:outline-none ">
                     Screenshots
                   </span>
-                  <span className="flex ml-3 px-3 py-1 text-sm rounded-lg   text-white hover:text-purple hover:cursor-pointer focus:cursor-pointer focus:text-white focus:outline-none ">
+                  <span className="flex ml-3 px-3 py-1 text-sm rounded-lg   text-white  hover:cursor-pointer focus:cursor-pointer focus:text-white focus:outline-none ">
                     Pricing
                   </span>
 
-                  <span className="flex ml-3 px-3 py-1 text-sm text-white rounded-lg hover:text-purple hover:cursor-pointer focus:cursor-pointer focus:text-white focus:outline-none ">
+                  <span className="flex ml-3 px-3 py-1 text-sm text-white rounded-lg  hover:cursor-pointer focus:cursor-pointer focus:text-white focus:outline-none ">
                     Contact
                   </span>
                 </div>
@@ -148,7 +148,7 @@ const Navbar = () => {
             </div>
           </div>
         </div>
-        <div id="mob-nav" className="hidden">
+        <div id="mob-nav" className="md:hidden">
           <div className="px-2 py-3 sm:px-3">
             <span className="hover:cursor-pointer block px-3 py-3 rounded-lg  text-gray-600 hover:bg-gray-100  focus:outline-none focus:bg-none">
               Home

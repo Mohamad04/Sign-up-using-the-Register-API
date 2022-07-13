@@ -12,10 +12,10 @@ function App() {
   return (
 
     <Router>
-	<div className="App"></div>
+	    <div className="App"></div>
       <Routes>
-        <Route exact path="/" element={<SignUp/>} ></Route>
-        <Route exact path="/customers" element={<Home/>}></Route>
+        <Route exact path="/customers" element={<SignUp/>} ></Route>
+        <Route exact path="/" element={<Home/>}></Route>
       </Routes>
     </Router>
   );

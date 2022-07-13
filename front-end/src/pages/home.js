@@ -12,7 +12,7 @@ function Home() {
 
         <Navbar />
         <section className="second-section ">
-          <div className=" max-w-5xl mx-auto py-4 flex md:flex-row flex-col items-center">
+          <div className=" max-w-5xl mx-auto py-4 pl-3 flex md:flex-row flex-col items-center">
             <div className="w-7/12 lg:flex-grow lg:pr-4 md:pr-4 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center">
               <h1 className="title-font text-6xl leading-none font-bold  text-gray-800">
                 Creative way to showcase your App
