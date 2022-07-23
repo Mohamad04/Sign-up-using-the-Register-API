@@ -3,7 +3,7 @@ const app = express();
 const bodyParser = require("body-parser");
 const cors = require("cors");
 require('dotenv/config')
-// Now have the ability to create ROUTES
+const config = require('./src/api/config/config')
 
 
 app.use(bodyParser.json());
@@ -21,12 +21,15 @@ app.get('/', (req, res) => {
 });
 
 
-const adminRoute = require('./src/api/routes/route');
-app.use('/admin', adminRoute)
+const adminRoutes = require('./src/api/routes/route.admin');
+app.use("/admin", adminRoutes);
+
+const customerRoutes = require('./src/api/routes/route.customer');
+app.use("/customers", customerRoutes);
 
 
 //  we start listening to the server
-const port = process.env.PORT || 8080;
+const port = config.app.port ;
 app.listen(port, () => {
   console.log(" 🔥 Server is up and running on port : " + port);
 });

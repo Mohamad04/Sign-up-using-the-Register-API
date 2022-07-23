@@ -44,8 +44,9 @@ const Signup = () => {
     if (response.data["valid"] === false || !response.data["valid"]) {
       setmissingFields("not valid");
     } else {
-    const data = await response.json();
-    console.log(data);
+
+   
+    console.log(response.data);
     navigate("/customers");
 
     }
