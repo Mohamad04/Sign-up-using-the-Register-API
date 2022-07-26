@@ -21,11 +21,17 @@ class CustomerController {
 
             const salt = await bcrypt.genSalt(10);          // => default = 10 ||   if there are more than 2 users with the same password. If the hacker cracked one he will know the others
             const hash = await bcrypt.hash(password, salt); //  bcrypt.hash() is an async function so we need to use async/await.
-      
+            const created_at = new Date(
+              new Date().toLocaleString("en-US", {
+                timeZone: "Europe/Paris",
+              })
+            );
+
             const customer = {
                 name: name,
                 email: email,
-                password: hash
+                password: hash,
+                created_at: created_at
             };
             const insertCustomer = await db.insertCustomer(customer);
             // console.log("insert   ")
@@ -70,17 +76,53 @@ class CustomerController {
     }
 
 
-    // async getCustomers(req, res) {
-    //     try {
-    //         const { paginationNb} = req.body;
-    //         const getCustomers = await db.getAllCustomers(paginationNb)
-    //         console.log("getCustomers")
-    //     } catch (error) {
-    //       return res.status(401).send({
-    //         message: error.message,
-    //       });
-    //     }
-    // }
+    async getCustomers(req, res) {
+        try {
+            const getCustomers = await db.getAllCustomers();
+            
+            if(!getCustomers){
+                return res.status(400).send({
+                    message : "No customers found"
+                })
+            }
+            // console.log(getCustomers)
+            return res.status(200).send(
+                getCustomers
+            )
+
+        } catch (error) {
+          return res.status(401).send({
+            message: error.message,
+          });
+        }
+    }
+
+
+
+    async getAverageRegistrations (req, res) {
+        try {
+          const nbOfTime = req.body.nbOfTime;
+          const timeUnit = req.body.timeUnit;
+          // console.log(req.body)
+          const getAverageNumber = await db.getAverageRegistrations(
+            nbOfTime,
+            timeUnit
+          );
+
+          if (!getAverageNumber) {
+            return res.status(400).send({
+              message: "No customers found",
+            });
+          }
+  
+          return res.status(200).send(getAverageNumber);
+        } catch (error) {
+            return res.status(401).send({
+              message: error.message,
+            });
+        }
+    
+    }
 
 }
 

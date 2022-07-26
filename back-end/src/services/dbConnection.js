@@ -74,16 +74,36 @@ db.insertCustomer = (customerObject) => {
 };
 
 
-db.getAllCustomers = (pgNb) => {
-    return new Promise((resolve, reject) => {
-        con.query(`SELECT * FROM customers LIMIT ?`, [pgNb], (error, result) => {
-            if(error) {
-                reject(error)
-            }
-            resolve(result)
-        })
-    })
-}
+db.getAllCustomers = () => {
+//   console.log(selectQuery);
+  return new Promise((resolve, reject) => {
+    con.query(`SELECT id, name, email FROM customers`, (error, result) => {
+      if (error) {
+        reject(error);
+      }
+      resolve(result);
+    });
+  });
+};
+
+
+db.getAverageRegistrations = (nbOfTime, timeUnit) => {
+  //   console.log(selectQuery);
+  return new Promise((resolve, reject) => {
+    con.query(
+      `SELECT id, name, email FROM customers where created_at > now() - interval ${nbOfTime} ${timeUnit}`,
+  
+      (error, result) => {
+        if (error) {
+          reject(error);
+        }
+        resolve(result);
+      }
+    );
+  });
+};
+
+
 
 
 // console.log(db)

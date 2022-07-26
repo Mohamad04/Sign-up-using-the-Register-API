@@ -30,7 +30,7 @@ const Signup = () => {
     };
 
 
-    const handle = (e) => {
+    const handleInput = (e) => {
       const newCustomer = { ...customerDetails };
       newCustomer[e.target.id] = e.target.value;
       setCustomerDetails(newCustomer);
@@ -44,15 +44,10 @@ const Signup = () => {
     if (response.data["valid"] === false || !response.data["valid"]) {
       setmissingFields("not valid");
     } else {
-
-   
-    console.log(response.data);
-    navigate("/customers");
-
+      console.log(response.data);
+      navigate("/customers");
     }
-    
     } 
- 
   };
 
 
@@ -85,7 +80,7 @@ const Signup = () => {
                 type="text"
                 id="name"
                 name="name"
-                onChange={e => handle(e)}
+                onChange={e => handleInput(e)}
                 className=" w-9/12 bg-white border-2 border-gray-300 rounded-sm  focus:ring-2 focus:ring-primary-200 text-[12px]  shadow-md outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
               />
               </div>
@@ -102,7 +97,7 @@ const Signup = () => {
                 type="text"
                 id="email"
                 name="email"
-                onChange={e => handle(e)}
+                onChange={e => handleInput(e)}
                 className=" w-9/12 bg-white border-2 border-gray-300 rounded-sm  focus:ring-2 focus:ring-primary-200 text-[12px]  shadow-md outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
               />
               </div>
@@ -119,7 +114,7 @@ const Signup = () => {
                 type="password"
                 id="password"
                 name="password"
-                onChange={e => handle(e)}
+                onChange={e => handleInput(e)}
                 className=" w-9/12 bg-white border-2 border-gray-300 rounded-sm  focus:ring-2 focus:ring-primary-200 text-[12px]  shadow-md outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
               />
               </div>
