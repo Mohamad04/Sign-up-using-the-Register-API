@@ -13,7 +13,7 @@ class CustomerController {
             const { name, email, password } = req.body;
             const customerExist = await db.getCustomerByEmail(email);
             if(customerExist){
-                return res.status(400).send({
+                return res.status(401).send({
                     message: "customer already exists"
                 })
             }
@@ -36,8 +36,8 @@ class CustomerController {
             const insertCustomer = await db.insertCustomer(customer);
             // console.log("insert   ")
             if(!insertCustomer) {
-                return res.send(400).send({
-                    message: "Error with the connection"
+                return res.send(401).send({
+                    message: "Something happened "
                 })
             }
 
@@ -48,8 +48,9 @@ class CustomerController {
             );
 
             const refreshToken = jwt.sign(
-                { customer: customer },
-                process.env.REFRESH_TOKEN_SECRET
+              { customer: customer },
+              process.env.REFRESH_TOKEN_SECRET,
+              { expiresIn: "30d" }
             );
 
              res.cookie("refreshToken", refreshToken, {
@@ -62,7 +63,7 @@ class CustomerController {
 
 
             return res.status(201).send({
-              message: "Created Successfully",
+              authenticated: true,
               accessToken,
               customer: customer,
             });
@@ -81,7 +82,7 @@ class CustomerController {
             const getCustomers = await db.getAllCustomers();
             
             if(!getCustomers){
-                return res.status(400).send({
+                return res.status(401).send({
                     message : "No customers found"
                 })
             }
@@ -91,7 +92,7 @@ class CustomerController {
             )
 
         } catch (error) {
-          return res.status(401).send({
+          return res.status(400).send({
             message: error.message,
           });
         }
@@ -110,14 +111,14 @@ class CustomerController {
           );
 
           if (!getAverageNumber) {
-            return res.status(400).send({
+            return res.status(401).send({
               message: "No customers found",
             });
           }
   
           return res.status(200).send(getAverageNumber);
         } catch (error) {
-            return res.status(401).send({
+            return res.status(400).send({
               message: error.message,
             });
         }

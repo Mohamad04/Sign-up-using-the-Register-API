@@ -4,6 +4,7 @@ import Home from "./pages/home";
 import CustomerSignUp from "./pages/cutomerSignUp";
 import AdminLogIn from "./pages/adminLogIn";
 import Customers from "./pages/cutstomersList";
+import ProtectedRoute from "./protected.route";
 
  
 
@@ -14,14 +15,12 @@ function App() {
     <Router>
       <div className="App"></div>
       <Routes>
-        <Route exact path="/customers" element={<Customers />}></Route>
-        <Route
-          exact
-          path="/customers/signup"
-          element={<CustomerSignUp />}
-        ></Route>
+        <Route exact path="/" element={<CustomerSignUp />}></Route>
+        <Route exact path="/design" element={<Home />}></Route>
         <Route exact path="/admin/login" element={<AdminLogIn />}></Route>
-        <Route exact path="/" element={<Home />}></Route>
+        <Route element={<ProtectedRoute />}>
+          <Route exact path="/customers/:token" element={<Customers />}></Route>
+        </Route>
       </Routes>
     </Router>
   );

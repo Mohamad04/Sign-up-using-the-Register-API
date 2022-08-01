@@ -1,18 +1,12 @@
 import React from "react";
-import { Route } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import Auth from "./auth";
 
-const ProtectedRoute = ({ children, ...rest }) => {
-  return (
-    <Route
-      {...rest}
-      render={() => {
-        return Auth.isAuthenticated() === true
-          ? children
-          : (window.location.href = "http://localhost:3000/");
-      }}
-    >
-    </Route>
+const ProtectedRoute = () => {
+  return Auth.isAuthenticated() === true ? (
+    <Outlet />
+  ) : (
+    (window.location.href = "http://localhost:3000/")
   );
 };
 

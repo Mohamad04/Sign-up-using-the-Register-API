@@ -8,10 +8,11 @@ class AdminController {
 
     async logIn(req, res) {
         try {
+        // console.log(req.body)
             const adminExist = await db.getAdminByEmail(req.body.email);
             // console.log(adminExist)
-            if (adminExist === null) {
-                return res.status(400).send({
+            if (!adminExist) {
+                return res.status(401).send({
                     message: "Email does not exist!"
                 })
             }
@@ -22,33 +23,57 @@ class AdminController {
                     message: "Password is incorrect"
                 })
             }
+
+            const payload = {
+              id: adminExist.id,
+            };
+
             const accessToken = jwt.sign(
-              { admin: adminExist },
+              payload,
               process.env.ACCESS_TOKEN_SECRET,
               { expiresIn: "15m" }
             );
             // console.log(accessToken);
             const refreshToken = jwt.sign(
-                {admin: adminExist},
-                process.env.REFRESH_TOKEN_SECRET
-            )
-            res.cookie("refreshToken", refreshToken, {
-              // expires: new Date(Date.now() + 2.5 * 3600000),
-              path: "/",
-              secure: true,
-              httpOnly: true,
-              sameSite: true,
-            }); 
+                payload,
+                process.env.REFRESH_TOKEN_SECRET,
+                { expiresIn: "30d" }
+            );
+            // res.cookie("refreshToken", refreshToken, {
+            //   // expires: new Date(Date.now() + 2.5 * 3600000),
+            //   path: "/",
+            //   secure: true,
+            // //   httpOnly: true,
+            //   sameSite: true,
+            // }); 
+            // res.setHeader("Set-Cookie", `refreshToken=${refreshToken}`);
+            res.cookie("refreshToken", refreshToken,
+            //  {
+            //   path: "/",
+            //   secure: true,
+            //   httpOnly: true,
+            //   sameSite: true,
+            // }
+            );
 
-            return res.status(201).send({
-              message: "Signed In!",
+            const adminToken = await db.getRefreshTokenById(adminExist.id);
+            if (adminToken) {
+                await db.deleteRefreshToken(adminExist.id)
+            }
+
+            await db.insertRefreshToken({ userId: adminExist.id, token: refreshToken})
+
+            return res.status(200).send({
+              authenticated: true,
               accessToken,
               user: adminExist,
             });
+
         } catch(err){
-            return res.status(401).send({
-                message: err.message,
-            })
+            return res.status(400).send({
+              authenticated: false,
+              message: err,
+            });
         }
     }
 
@@ -67,7 +92,7 @@ class AdminController {
                 });
              res.end();
         } catch (error) {
-            return res.status(500).send({
+            return res.status(400).send({
                 message: error
             })
         }

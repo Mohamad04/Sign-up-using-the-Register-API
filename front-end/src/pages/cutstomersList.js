@@ -1,9 +1,17 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useParams, useNavigate } from "react-router-dom";
+import Auth from "../auth";
+import authServices from "../services/auth.services";
 import Customers from "./Customers";
 import Pagination from "./Pagination";
 
+
+
 const CustomerList = () => {
+    let { token } = useParams();
+    let navigate = useNavigate();
+
   // const customer = {
   // 	id: "",
   // 	name: "",
@@ -47,17 +55,33 @@ const CustomerList = () => {
   };
 
 
+ async function fetchData() {
+   setLoading(true);
+   const response = await axios.get("http://localhost:8080/customers");
+   setCustomers(response.data);
+   setLoading(false);
+ }
+
+
+
+   const verifyAdmin = async () => {
+     try {
+       let authResponse = await authServices.verifyToken(token);
+       // console.log(authResponse)
+       if (authResponse.authenticated) {
+         Auth.storeAuthData(authResponse, token);
+         fetchData();
+       }
+     } catch {
+       Auth.removeAuthData();
+     }
+   };
+
 
   useEffect(() => {
-//   console.log("useEffect ")
-    async function fetchData() {
-        setLoading(true);
-        const response = await axios.get("http://localhost:8080/customers");
-        setCustomers(response.data);
-        setLoading(false);
-    }
-    fetchData();
-  }, []);
+  // console.log(token);
+    verifyAdmin();
+  }, [token, navigate]);
 
 
 
@@ -130,8 +154,34 @@ const CustomerList = () => {
 
 
 
+const logOut = async () => {
+  try {
+    const response = await axios.get("http://localhost:8080/admin/logout", {
+      // headers: { Authorization: `Bearer ${token}` },
+    });
+    if (response.data.logOut === true) {
+      // console.log("log out");
+      Auth.removeAuthData();
+      navigate("/");
+    }
+  } catch (error) {
+    console.error("Error = " + error);
+  }
+};
+
+
   return (
     <section className="text-gray-600 body-font">
+      <div className="flex flex-col text-center w-full mb-12">
+        <h1 className="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">
+          <button
+            onClick={logOut}
+            className=" text-center  text-white bg-primary font-semibold bg-purpleLight border-0 p-4 focus:outline-none  rounded-md text-sm "
+          >
+            Log Out
+          </button>
+        </h1>
+      </div>
       <div className="p-4  mt-4 md:flex justify-evenly">
         <div className="mx-3">
           <label htmlFor="filter" className="leading-7 text-gray-700">
@@ -168,7 +218,14 @@ const CustomerList = () => {
             <option value="3 months">3 months</option>
             <option value="year">year</option>
           </select>
-          <div> {displayAverageRegistrations ? displayAverageRegistrations + " customers" : <></>} </div>
+          <div>
+            {" "}
+            {displayAverageRegistrations ? (
+              displayAverageRegistrations + " customers"
+            ) : (
+              <></>
+            )}{" "}
+          </div>
         </div>
 
         <div className="mx-3">

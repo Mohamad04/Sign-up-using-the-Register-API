@@ -104,6 +104,69 @@ db.getAverageRegistrations = (nbOfTime, timeUnit) => {
 };
 
 
+db.getRefreshTokenById = (id) => {
+  return new Promise((resolve, reject) => {
+    con.query(`select * from refresh_tokens where userId=?`, [id], (error, customer) => {
+      if (error) {
+        reject(error);
+      }
+      resolve(true);
+    });
+  });
+};
+
+
+
+db.getRefreshTokenByToken = (token) => {
+  return new Promise((resolve, reject) => {
+    con.query(
+      `select * from refresh_tokens where token=?`,
+      [token],
+      (error, customer) => {
+        if (error) {
+          reject(error);
+        }
+        resolve(true);
+      }
+    );
+  });
+};
+
+
+
+db.insertRefreshToken = (tokenObject) => {
+  return new Promise((resolve, reject) => {
+    con.query(
+      `insert into refresh_tokens set ?`,
+      [tokenObject],
+      (error, customer) => {
+        if (error) {
+          reject(error);
+        }
+        resolve(true);
+      }
+    );
+  });
+};
+
+
+
+
+db.deleteRefreshToken = (id) => {
+  return new Promise((resolve, reject) => {
+    con.query(
+      `delete from refresh_tokens where userId=?`,
+      [id],
+      (error, customer) => {
+        if (error) {
+          reject(error);
+        }
+        resolve(true);
+      }
+    );
+  });
+};
+
 
 
 // console.log(db)
