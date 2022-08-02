@@ -1,18 +1,18 @@
 const jwt = require('jsonwebtoken');
-const db = require('../services/dbConnection')
+
+
 
 class AuthController {
-
-
-  Authverify(req, res) {
+  Authverify(req, res, next) {
     try {
       const authHeader = req.headers["authorization"];
       // console.log(authHeader);
       const token = authHeader && authHeader.split(" ")[1];
-      // console.log(token)
+      // console.log("token = ", token)
       if (token === null) {
         return res.status(401).send({
           authenticated: false,
+          message: "token is empty",
         });
       }
 
@@ -20,18 +20,21 @@ class AuthController {
         token,
         process.env.ACCESS_TOKEN_SECRET,
         function (err, decoded) {
-          if (err) {
+        // console.log("error = ", err.message);
+          if (err && err.message === "jwt expired") {
+            console.log("expiryeeeeeeeeeeeeeeeeeee ");
+            next();
+          } else if(err) {
             return res.status(403).send({
               authenticated: false,
-              message: "Token has expired",
+              message: err,
             });
           }
-
+        //  console.log("details = " , decoded)
           res.status(200).send({
             authenticated: true,
-            email: decoded.admin.email,
-            id: decoded.admin.id,
           });
+          
         }
       );
     } catch (error) {
@@ -43,20 +46,7 @@ class AuthController {
   }
 
 
-  async verifyRefreshToken (req, res) {
-    try {
-          console.log("refresh = " ,req.headers.cookie);
-          // const verifyRefresh = await db.getRefreshTokenByToken(token); 
-          return res.send({
-            mesg: "sadfsdf"
-          })
-    } catch (error) {
-          return res.status(401).send({
-              authenticated: false,
-              error: error.message,
-          });
-    }
-  }
+
 
 
 

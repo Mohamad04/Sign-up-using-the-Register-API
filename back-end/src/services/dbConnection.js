@@ -47,6 +47,24 @@ db.getAdminByEmail = (email) => {
 }
 
 
+db.getAdminById = (id) => {
+  // console.log(email)
+  return new Promise((resolve, reject) => {
+    con.query(
+      "SELECT * from admins WHERE id=? ",
+      [id],
+      (error, admins) => {
+        // console.log(admins);
+        if (error) {
+          reject(error);
+        }
+        resolve(admins[0]);
+      }
+    );
+  });
+};
+
+
 db.getCustomerByEmail = (email) => {
     // console.log("db");
     return new Promise((resolve, reject) => {
@@ -126,7 +144,7 @@ db.getRefreshTokenByToken = (token) => {
         if (error) {
           reject(error);
         }
-        resolve(true);
+        resolve(customer);
       }
     );
   });

@@ -67,13 +67,17 @@ const CustomerList = () => {
    const verifyAdmin = async () => {
      try {
        let authResponse = await authServices.verifyToken(token);
-       // console.log(authResponse)
+      //  console.log(authResponse)
        if (authResponse.authenticated) {
          Auth.storeAuthData(authResponse, token);
          fetchData();
+       } else {
+       Auth.removeAuthData();
+       navigate("/admin/login");
        }
      } catch {
        Auth.removeAuthData();
+       navigate("/admin/login")
      }
    };
 
@@ -81,11 +85,13 @@ const CustomerList = () => {
   useEffect(() => {
   // console.log(token);
     verifyAdmin();
-  }, [token, navigate]);
+    // fetchData();
+  }, [token]);
 
 
 
   useEffect(() => {
+  
     // Get current Customers
     const indexOfLastCustomer = currentPage * customersPerPage;
     const indexOfFirstCustomer = indexOfLastCustomer - customersPerPage;

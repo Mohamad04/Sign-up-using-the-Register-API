@@ -1,21 +1,22 @@
 const express = require('express')
 const app = express();
-
 const bodyParser = require("body-parser");
 const cors = require("cors");
 require('dotenv/config')
 const config = require('./src/api/config/config')
-
 var cookieParser = require("cookie-parser");
-app.use(cookieParser());
 
 
-app.use(bodyParser.json());
+
 app.use(
   cors({
-    origin: "*"
+    origin: "http://localhost:3000",
+    credentials: true, //access-control-allow-credentials:true
+    optionSuccessStatus: 200,
   })
 );  
+app.use(cookieParser());
+app.use(bodyParser.json());
 
 
 
